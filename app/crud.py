@@ -5,8 +5,8 @@ from app import handlers, models
 
 
 def create_route(db: Session, file) -> models.Route:
-    points = handlers.read_coordinates_from_csv(file)
-    points = handlers.sort_coordinates(points)
+    tsp_handler = handlers.TSPHandler(file)
+    points = tsp_handler.process()
     db_route = models.Route(points=points)
     db.add(db_route)
     db.commit()
