@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import time
 from contextlib import asynccontextmanager
@@ -37,7 +38,7 @@ async def add_route(
     file: UploadFile = File(...), db: Session = Depends(get_db)
 ):
     start_time = time.time()
-    res = create_route(db, file)
+    res = await asyncio.to_thread(create_route, db, file)
     end_time = time.time()
 
     logger.info(f"Processing time: {end_time - start_time}")
