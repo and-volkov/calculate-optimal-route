@@ -3,7 +3,7 @@ import logging
 import time
 from contextlib import asynccontextmanager
 
-from fastapi import Depends, FastAPI, File, UploadFile
+from fastapi import APIRouter, Depends, FastAPI, File, UploadFile
 from sqlalchemy.orm import Session
 
 from .crud import create_route, get_route
@@ -27,13 +27,10 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-
-@app.get("/")
-async def read_root():
-    return {"Hello": "World"}
+router = APIRouter()
 
 
-@app.post("/routes/", response_model=Route)
+@router.post("/routes/", response_model=Route)
 async def add_route(
     file: UploadFile = File(...), db: Session = Depends(get_db)
 ):
@@ -45,6 +42,9 @@ async def add_route(
     return res
 
 
-@app.get("/routes/{route_id}", response_model=Route)
+@router.get("/routes/{route_id}", response_model=Route)
 async def read_route(route_id: int, db: Session = Depends(get_db)):
     return get_route(db, route_id)
+
+
+app.include_router(router, prefix=settings.API_V1_STR, tags=["routes"])
