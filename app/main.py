@@ -42,9 +42,11 @@ async def add_route(
         logger.error(e)
         raise HTTPException(status_code=400, detail="Invalid file")
     end_time = time.time()
+    file_size_kb = file.size / 1000  # type: ignore
 
     logger.info(
-        f"Processing time of file {file.filename}: {end_time - start_time}"
+        f"Processing time of file {file.filename} "
+        f"with size {file_size_kb} Kb: {end_time - start_time}"
     )
     return res
 

@@ -33,7 +33,9 @@ class TSPHandler:
                     {"lat": float(row["lat"]), "lng": float(row["lng"])}
                 )
             except KeyError:
-                logger.error(f"Invalid keys in CSV file, {self.file.filename}")
+                logger.error(
+                    f"Invalid keys in CSV file, {self.file.filename} "
+                )
         self.file.file.close()
         return coordinates
 
