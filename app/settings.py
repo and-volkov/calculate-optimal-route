@@ -17,6 +17,7 @@ class Settings(BaseSettings):
 
     SERVER_NAME: str
     SERVER_HOST: AnyHttpUrl
+    SERVER_PORT: int
 
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
