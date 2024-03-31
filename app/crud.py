@@ -4,7 +4,6 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from app import handlers, models
-from app.settings import settings
 
 logger = logging.getLogger(__name__)
 
