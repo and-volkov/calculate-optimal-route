@@ -70,13 +70,7 @@ docker compose exec app alembic upgrade head
 6. Запустить тесты
 
 ```bash
-docker compose exec app pytest
-```
-
-Или с помощью Make
-
-```bash
-make test
+pytest
 ```
 
 ### Документация
@@ -98,4 +92,3 @@ example@example.com
 ```
 example
 ```
-
