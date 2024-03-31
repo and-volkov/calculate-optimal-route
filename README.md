@@ -67,6 +67,12 @@ make compose
 docker compose exec app alembic upgrade head
 ```
 
+Или с помощью Make
+
+```bash
+make migration
+```
+
 6. Запустить тесты
 
 ```bash
