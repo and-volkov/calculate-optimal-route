@@ -27,7 +27,6 @@ def test_read_coordinates_from_csv(mock_file):
 
 
 def test_sort_coordinates():
-    # Create an instance of TSPHandler and call sort_coordinates method
     tsp_handler = TSPHandler(None)
     coordinates = [
         {"lat": 1, "lng": 2},
@@ -48,7 +47,6 @@ def test_sort_coordinates():
 
 
 def test_distance():
-    # Create an instance of TSPHandler and call distance method
     tsp_handler = TSPHandler(None)
     coord1 = {"lat": 1, "lng": 2}
     coord2 = {"lat": 4, "lng": 6}
@@ -57,7 +55,6 @@ def test_distance():
 
 
 def test_nearest_neighbor():
-    # Create an instance of TSPHandler and call nearest_neighbor method
     tsp_handler = TSPHandler(None)
     coordinates = [
         {"lat": 1, "lng": 2},
@@ -69,7 +66,6 @@ def test_nearest_neighbor():
 
 
 def test_process(mock_file):
-    # Create an instance of TSPHandler and call process method
     tsp_handler = TSPHandler(mock_file)
     expected_sorted_coordinates = [
         {"lat": 1.0, "lng": 2.0},

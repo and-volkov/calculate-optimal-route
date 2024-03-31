@@ -3,7 +3,8 @@ import logging
 import time
 from contextlib import asynccontextmanager
 
-from fastapi import APIRouter, Depends, FastAPI, File, UploadFile
+from fastapi import (APIRouter, Depends, FastAPI, File, HTTPException,
+                     UploadFile)
 from sqlalchemy.orm import Session
 
 from .crud import create_route, get_route
@@ -35,10 +36,16 @@ async def add_route(
     file: UploadFile = File(...), db: Session = Depends(get_db)
 ):
     start_time = time.time()
-    res = await asyncio.to_thread(create_route, db, file)
+    try:
+        res = await asyncio.to_thread(create_route, db, file)
+    except Exception as e:
+        logger.error(e)
+        raise HTTPException(status_code=400, detail="Invalid file")
     end_time = time.time()
 
-    logger.info(f"Processing time: {end_time - start_time}")
+    logger.info(
+        f"Processing time of file {file.filename}: {end_time - start_time}"
+    )
     return res
 
 

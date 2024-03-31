@@ -15,8 +15,6 @@ class Settings(BaseSettings):
 
     PROJECT_NAME: str
 
-    SECRET_KEY: str = "secret"
-
     SERVER_NAME: str
     SERVER_HOST: AnyHttpUrl
 
@@ -30,9 +28,6 @@ class Settings(BaseSettings):
     LOG_FILE_NAME: str = "logs.log"
     LOG_MESSAGE_FORMAT: str = "%(asctime)s %(levelname)s: %(message)s"
     LOG_DATE_FORMAT: str = "%Y-%m-%d %H:%M:%S"
-
-    JWT_TOKEN_LIFETIME_MINUTES: int = 60 * 24  # 1 day
-    ALGORITHM: str = "HS256"
 
     @field_validator("SQLALCHEMY_DATABASE_URI")  # type: ignore
     def assemble_db_connection(

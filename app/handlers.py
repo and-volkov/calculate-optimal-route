@@ -4,7 +4,7 @@ import logging
 import math
 from io import StringIO
 
-from fastapi import UploadFile
+from fastapi import HTTPException, UploadFile
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +33,7 @@ class TSPHandler:
                     {"lat": float(row["lat"]), "lng": float(row["lng"])}
                 )
             except KeyError:
-                pass
+                logger.error(f"Invalid keys in CSV file, {self.file.filename}")
         self.file.file.close()
         return coordinates
 
@@ -44,7 +44,7 @@ class TSPHandler:
         Sort a list of coordinates by latitude and longitude
 
         Args:
-            coordinates: A list of dictionaries with "lat" and "lng" keys
+            A list of indexes representing the optimal path
 
         Returns:
             A sorted list of dictionaries
@@ -65,7 +65,7 @@ class TSPHandler:
 
     def nearest_neighbor(self, coords: list[dict[str, float]]) -> list[int]:
         """
-        Find the nearest neighbor for each vertex in a list of coordinates
+        Find the nearest neighbor for each point in a list of coordinates
 
         Args:
             coords: A list of dictionaries with "lat" and "lng" keys
@@ -74,13 +74,10 @@ class TSPHandler:
             A list of indexes representing the optimal path
         """
         unvisited = set(range(len(coords)))  # Remove duplicates
-        logger.info(f"Unvisited: {len(unvisited)}")
-        logger.info(f"Coords: {len(coords)}")
-        current_point = 0  # Start from the first vertex
+        current_point = 0  # Start from the first point
         path = [current_point]
         unvisited.remove(current_point)
 
-        # Use a priority queue to efficiently find the nearest unvisited neighbor
         pq = [
             (self.distance(coords[current_point], coords[i]), i)
             for i in unvisited
@@ -92,7 +89,6 @@ class TSPHandler:
             path.append(nearest_point)
             unvisited.remove(nearest_point)
 
-            # Update priority queue with distances to newly visited vertex
             pq = [
                 (self.distance(coords[nearest_point], coords[i]), i)
                 for i in unvisited
@@ -105,5 +101,11 @@ class TSPHandler:
         """
         Process the uploaded file and return a sorted list of coordinates
         """
-        coordinates = self.read_coordinates_from_csv()
-        return self.sort_coordinates(coordinates)
+        try:
+            coordinates = self.read_coordinates_from_csv()
+            return self.sort_coordinates(coordinates)
+        except Exception as e:
+            logger.error(e)
+            raise HTTPException(
+                status_code=500, detail="Internal Server Error"
+            )
