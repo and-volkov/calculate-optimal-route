@@ -75,7 +75,7 @@ class TSPHandler:
         Returns:
             A list of indexes representing the optimal path
         """
-        unvisited = set(range(len(coords)))  # Remove duplicates
+        unvisited = set(range(len(coords)))
         current_point = 0  # Start from the first point
         path = [current_point]
         unvisited.remove(current_point)
