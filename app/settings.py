@@ -11,7 +11,7 @@ load_dotenv()
 
 
 class Settings(BaseSettings):
-    API_V1_STR: str = "/api/"
+    API_V1_STR: str = "/api"
 
     PROJECT_NAME: str
 
